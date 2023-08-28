@@ -4,7 +4,7 @@ package parser
 shadowsocksr: ['remarks', 'obfsparam', 'protoparam', 'group']
 */
 
-type OutShadowSocksR struct {
+type ParserSSR struct {
 	Address  string
 	Port     int
 	Method   string

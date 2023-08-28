@@ -4,7 +4,7 @@ package parser
 trojan: ['allowInsecure', 'peer', 'sni', 'type', 'path', 'security', 'headerType']
 */
 
-type OutTrojan struct {
+type ParserTrojan struct {
 	Address  string
 	Port     int
 	Password string

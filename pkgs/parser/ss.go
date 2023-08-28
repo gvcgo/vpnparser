@@ -4,7 +4,7 @@ package parser
 shadowsocks: ['plugin', 'obfs', 'obfs-host', 'mode', 'path', 'mux', 'host']
 */
 
-type OutShadowSocks struct {
+type ParserSS struct {
 	Address  string
 	Port     int
 	Method   string

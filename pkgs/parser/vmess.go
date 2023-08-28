@@ -4,7 +4,7 @@ package parser
 vmess: ['v', 'ps', 'add', 'port', 'aid', 'scy', 'net', 'type', 'tls', 'id', 'sni', 'host', 'path', 'alpn', 'security', 'skip-cert-verify', 'fp', 'test_name', 'serverPort', 'nation']
 */
 
-type OutVmess struct {
+type ParserVmess struct {
 	Address string
 	Port    int
 	UUID    string

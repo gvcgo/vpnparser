@@ -4,7 +4,7 @@ package parser
 vless: ['security', 'type', 'sni', 'path', 'encryption', 'headerType', 'packetEncoding', 'serviceName', 'mode', 'flow', 'alpn', 'host', 'fp', 'pbk', 'sid', 'spx']
 */
 
-type OutVless struct {
+type ParserVless struct {
 	Address string
 	Port    int
 	UUID    string
