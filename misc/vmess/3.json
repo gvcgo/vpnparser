@@ -1,0 +1,57 @@
+{
+    "origin": {
+        "v": "2",
+        "ps": "9|🇹🇷土耳其04",
+        "add": "2t1u04.abzoones.xyz",
+        "port": "36868",
+        "aid": 0,
+        "scy": "auto",
+        "net": "tcp",
+        "type": "none",
+        "tls": "tls",
+        "id": "92a16420-9b5a-4533-9a76-a0c7b3213207",
+        "sni": "tr04.abpilot.xyz"
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "2t1u04.abzoones.xyz",
+                        "port": 36868,
+                        "users": [
+                            {
+                                "id": "92a16420-9b5a-4533-9a76-a0c7b3213207",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "tr04.abpilot.xyz",
+                    "show": false
+                },
+                "tcpSetting": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "origin": {
+        "v": "2",
+        "ps": "欧洲(自由之梦免费节点-严禁倒卖) 2",
+        "add": "46.182.107.39",
+        "port": "443",
+        "type": "none",
+        "id": "d3133484-f2bf-4b0c-8d38-f8e645b65687",
+        "aid": "64",
+        "net": "ws",
+        "path": "/footers",
+        "host": "www.07890885.xyz",
+        "tls": "tls"
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "46.182.107.39",
+                        "port": 443,
+                        "users": [
+                            {
+                                "id": "d3133484-f2bf-4b0c-8d38-f8e645b65687",
+                                "alterId": 64,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "tls",
+                "wsSettings": {
+                    "path": "/footers",
+                    "headers": {
+                        "Host": "www.07890885.xyz"
+                    }
+                },
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "www.07890885.xyz",
+                    "show": false
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

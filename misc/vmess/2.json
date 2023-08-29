@@ -1,0 +1,65 @@
+{
+    "origin": {
+        "add": "bobbykotick.rip",
+        "host": "Lille.bobbykotick.rip",
+        "sni": "Lille.bobbykotick.rip",
+        "id": "D213ED80-199B-4A01-9D62-BBCBA9C16226",
+        "net": "ws",
+        "path": "\/speedtest",
+        "port": "443",
+        "ps": "GetAFreeNode.com-Lille",
+        "tls": "tls",
+        "fp": "safari",
+        "alpn": "h2,http\/1.1",
+        "v": 2,
+        "aid": 0,
+        "type": "none"
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "bobbykotick.rip",
+                        "port": 443,
+                        "users": [
+                            {
+                                "id": "D213ED80-199B-4A01-9D62-BBCBA9C16226",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "tls",
+                "wsSettings": {
+                    "path": "/speedtest",
+                    "headers": {
+                        "Host": "Lille.bobbykotick.rip"
+                    }
+                },
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "Lille.bobbykotick.rip",
+                    "alpn": [
+                        "h2",
+                        "http/1.1"
+                    ],
+                    "show": false
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

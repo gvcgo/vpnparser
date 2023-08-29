@@ -1,0 +1,64 @@
+{
+    "origin": {
+        "v": "2",
+        "ps": "🇫🇷FR法国(youtube阿伟科技)",
+        "add": "asintech-id-telegram.as-tech.top",
+        "port": "2200",
+        "id": "91804ca9-924b-4d5e-ca81-64d4cbee709a",
+        "aid": "0",
+        "scy": "auto",
+        "net": "tcp",
+        "type": "http",
+        "host": "fast.com",
+        "path": "/",
+        "tls": "",
+        "sni": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "asintech-id-telegram.as-tech.top",
+                        "port": 2200,
+                        "users": [
+                            {
+                                "id": "91804ca9-924b-4d5e-ca81-64d4cbee709a",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "",
+                "tcpSetting": {
+                    "header": {
+                        "type": "http",
+                        "request": {
+                            "path": [
+                                "/"
+                            ],
+                            "headers": {
+                                "Host": [
+                                    "fast.com"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

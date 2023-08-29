@@ -1,0 +1,58 @@
+{
+    "origin": {
+        "v": "2",
+        "ps": "_US_美国",
+        "add": "216.24.57.1",
+        "port": "443",
+        "type": "none",
+        "id": "a7ee85f4-2528-412e-994f-ce65f54754e4",
+        "aid": "0",
+        "net": "ws",
+        "path": "a7ee85f4",
+        "host": "dd2.1808.cf",
+        "tls": "tls"
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "216.24.57.1",
+                        "port": 443,
+                        "users": [
+                            {
+                                "id": "a7ee85f4-2528-412e-994f-ce65f54754e4",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "tls",
+                "wsSettings": {
+                    "path": "a7ee85f4",
+                    "headers": {
+                        "Host": "dd2.1808.cf"
+                    }
+                },
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "dd2.1808.cf",
+                    "show": false
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

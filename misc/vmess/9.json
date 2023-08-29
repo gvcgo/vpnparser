@@ -1,0 +1,51 @@
+{
+    "origin": {
+        "v": "2",
+        "ps": "🇭🇰_HK_香港",
+        "add": "8.218.150.152",
+        "port": 45106,
+        "id": "aa7f7fd3-8f88-45c7-9e27-a03380d6cc89",
+        "aid": 0,
+        "scy": "auto",
+        "net": "http",
+        "tls": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "8.218.150.152",
+                        "port": 45106,
+                        "users": [
+                            {
+                                "id": "aa7f7fd3-8f88-45c7-9e27-a03380d6cc89",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "http",
+                "security": "",
+                "httpSettings": {
+                    "host": [
+                        ""
+                    ],
+                    "path": ""
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

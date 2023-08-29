@@ -1,0 +1,55 @@
+{
+    "origin": {
+        "add": "103.160.204.228",
+        "aid": 0,
+        "host": "ecc.vtcss.top",
+        "id": "dd41b5cb-b72e-4a8c-c75a-3ecc928d6eb3",
+        "net": "ws",
+        "path": "/blue06",
+        "port": 80,
+        "ps": "\u4e9a\u592a\u5730\u533a  18",
+        "tls": "",
+        "type": "auto",
+        "security": "auto",
+        "skip-cert-verify": true,
+        "sni": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "103.160.204.228",
+                        "port": 80,
+                        "users": [
+                            {
+                                "id": "dd41b5cb-b72e-4a8c-c75a-3ecc928d6eb3",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "",
+                "wsSettings": {
+                    "path": "/blue06",
+                    "headers": {
+                        "Host": "ecc.vtcss.top"
+                    }
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

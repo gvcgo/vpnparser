@@ -1,0 +1,60 @@
+{
+    "origin": {
+        "add": "192.200.160.17",
+        "v": "2",
+        "ps": "Relay_🇺🇸US-🇸🇪SE_1631",
+        "port": 8443,
+        "id": "8a926add-6e0d-4af7-dbeb-5efbbc48deab",
+        "aid": "0",
+        "net": "grpc",
+        "type": "",
+        "host": "a.boredhot.cloud",
+        "path": "",
+        "tls": "tls",
+        "sni": "",
+        "alpn": "",
+        "fp": "",
+        "scy": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "192.200.160.17",
+                        "port": 8443,
+                        "users": [
+                            {
+                                "id": "8a926add-6e0d-4af7-dbeb-5efbbc48deab",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "security": "tls",
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "a.boredhot.cloud",
+                    "show": false
+                },
+                "grpcSettings": {
+                    "serviceName": "",
+                    "multiMode": false
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

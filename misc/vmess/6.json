@@ -1,0 +1,56 @@
+{
+    "origin": {
+        "add": "137.175.9.200",
+        "port": "48101",
+        "id": "418048af-a293-4b99-9b0c-98ca3580dd24",
+        "aid": "64",
+        "scy": "auto",
+        "net": "tcp",
+        "v": "2",
+        "ps": "美国_0828780",
+        "host": "",
+        "path": "",
+        "tls": "",
+        "sni": "",
+        "type": "auto",
+        "serverPort": 0,
+        "nation": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "137.175.9.200",
+                        "port": 48101,
+                        "users": [
+                            {
+                                "id": "418048af-a293-4b99-9b0c-98ca3580dd24",
+                                "alterId": 64,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "",
+                "tcpSetting": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

@@ -1,5 +1,11 @@
 package xray
 
+import (
+	"fmt"
+
+	"github.com/moqsien/vpnparser/pkgs/parser"
+)
+
 /*
 https://xtls.github.io/config/outbounds/vmess.html#outboundconfigurationobject
 
@@ -37,7 +43,7 @@ Security:
 
 */
 
-var XrayVmess string = `{
+var XrayVmessSettings string = `{
 	"vnext": [
 	  {
 		"address": "127.0.0.1",
@@ -46,10 +52,61 @@ var XrayVmess string = `{
 		  {
 			"id": "5783a3e7-e373-51cd-8642-c83782b807c5",
 			"alterId": 0,
-			"security": "auto",
-			"level": 0
+			"security": "auto"
 		  }
 		]
 	  }
 	]
 }`
+
+type VmessOut struct {
+	RawUri   string
+	Parser   *parser.ParserVmess
+	outbound string
+}
+
+func (that *VmessOut) Parse(rawUri string) {
+	that.Parser.Parse(rawUri)
+}
+
+func (that *VmessOut) Addr() string {
+	if that.Parser == nil {
+		return ""
+	}
+	return that.Parser.GetAddr()
+}
+
+func (that *VmessOut) Host() string {
+	if that.Parser == nil {
+		return ""
+	}
+	return that.Parser.GetHost()
+}
+
+func (that *VmessOut) Scheme() string {
+	return parser.SchemeVmess
+}
+
+func (that *VmessOut) getStreamString() string {
+	// TODO: parse stream
+	return ""
+}
+
+func (that *VmessOut) getSettings() string {
+	// TODO: parse settings
+	return ""
+}
+
+func (that *VmessOut) getPattern() string {
+	// TODO: protocol tag
+	return XrayOut
+}
+
+func (that *VmessOut) GetOutboundStr() string {
+	if that.outbound == "" {
+		settings := that.getSettings()
+		stream := that.getStreamString()
+		that.outbound = fmt.Sprintf(that.getPattern(), settings, stream)
+	}
+	return that.outbound
+}
