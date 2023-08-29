@@ -8,6 +8,23 @@ import (
 	"github.com/moqsien/goutils/pkgs/gtui"
 )
 
+const (
+	SchemeSS     string = "ss://"
+	SchemeSSR    string = "ssr://"
+	SchemeTrojan string = "trojan://"
+	SchemeVless  string = "vless://"
+	SchemeVmess  string = "vmess://"
+)
+
+func GetVpnScheme(rawUri string) string {
+	sep := "://"
+	if !strings.Contains(rawUri, sep) {
+		return ""
+	}
+	sList := strings.Split(rawUri, sep)
+	return sList[0] + sep
+}
+
 func HandleQuery(rawUri string) (result string) {
 	result = rawUri
 	if !strings.Contains(rawUri, "?") {
@@ -22,9 +39,9 @@ func HandleQuery(rawUri string) (result string) {
 }
 
 func ParseRawUri(rawUri string) (result string) {
-	if strings.HasPrefix(rawUri, "vmess://") {
+	if strings.HasPrefix(rawUri, SchemeVmess) {
 		if r := crypt.DecodeBase64(strings.Split(rawUri, "://")[1]); r != "" {
-			result = "vmess://" + r
+			result = SchemeVmess + r
 		}
 		return
 	}
