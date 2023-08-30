@@ -2,8 +2,12 @@ package xray
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/moqsien/vpnparser/pkgs/parser"
+	"github.com/moqsien/vpnparser/pkgs/utils"
 )
 
 /*
@@ -66,6 +70,7 @@ type VmessOut struct {
 }
 
 func (that *VmessOut) Parse(rawUri string) {
+	that.Parser = &parser.ParserVmess{}
 	that.Parser.Parse(rawUri)
 }
 
@@ -87,26 +92,101 @@ func (that *VmessOut) Scheme() string {
 	return parser.SchemeVmess
 }
 
-func (that *VmessOut) getStreamString() string {
-	// TODO: parse stream
-	return ""
-}
-
 func (that *VmessOut) getSettings() string {
-	// TODO: parse settings
-	return ""
+	if that.Parser.Address == "" || that.Parser.Port == 0 {
+		return "{}"
+	}
+	j := gjson.New(XrayVmessSettings)
+	j.Set("vnext.0.address", that.Parser.Address)
+	j.Set("vnext.0.port", that.Parser.Port)
+	j.Set("vnext.0.users.0.id", that.Parser.UUID)
+	j.Set("vnext.0.users.0.alterId", gconv.Int(that.Parser.AID))
+	security := that.Parser.Security
+	if security == "" && that.Parser.SCY != "" {
+		security = that.Parser.SCY
+	}
+	j.Set("vnext.0.users.0.security", security)
+	return j.MustToJsonIndentString()
 }
 
-func (that *VmessOut) getPattern() string {
-	// TODO: protocol tag
-	return XrayOut
+func (that *VmessOut) getStreamString() string {
+	stream := gjson.New(XrayStream)
+	stream.Set("network", that.Parser.Net)
+	stream.Set("security", that.Parser.TLS)
+	switch that.Parser.Net {
+	case "tcp":
+		if that.Parser.Type != "http" {
+			// stream.Set("tcpSetting", XrayStreamTCPNone)
+			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
+		} else {
+			j := gjson.New(XrayStreamTCPHTTP)
+			j.Set("header.request.path.0", that.Parser.Path)
+			j.Set("header.request.headers.Host.0", that.Parser.Host)
+			// stream.Set("tcpSetting", j.MustToJsonIndentString())
+			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonIndentString(), stream)
+		}
+	case "ws":
+		j := gjson.New(XrayStreamWebSocket)
+		j.Set("path", that.Parser.Path)
+		j.Set("headers.Host", that.Parser.Host)
+		// stream.Set("wsSettings", j.MustToJsonIndentString())
+		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonIndentString(), stream)
+	case "http":
+		j := gjson.New(XrayStreamHTTP)
+		j.Set("host.0", that.Parser.Host)
+		j.Set("path", that.Parser.Path)
+		// stream.Set("httpSettings", j.MustToJsonIndentString())
+		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonIndentString(), stream)
+	case "grpc":
+		j := gjson.New(XrayStreamGRPC)
+		j.Set("serviceName", that.Parser.Host)
+		// stream.Set("grpcSettings", j.MustToJsonIndentString())
+		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonIndentString(), stream)
+	default:
+		return "{}"
+	}
+	if that.Parser.TLS != "" {
+		j := gjson.New(XrayStreamTLS)
+		serverName := that.Parser.SNI
+		if serverName == "" {
+			serverName = that.Parser.Host
+		}
+		j.Set("serverName", serverName)
+		if that.Parser.ALPN != "" {
+			aList := strings.Split(that.Parser.ALPN, ",")
+			j.Set("alpn", aList)
+		}
+		if that.Parser.FP != "" {
+			j.Set("fingerprint", that.Parser.FP)
+		}
+		// stream.Set("tlsSettings", j.MustToJsonIndentString())
+		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
+	}
+	return stream.MustToJsonIndentString()
+}
+
+func (that *VmessOut) setProtocolAndTag(outStr string) string {
+	j := gjson.New(outStr)
+	j.Set("protocol", "vmess")
+	j.Set("tag", utils.OutboundTag)
+	return j.MustToJsonIndentString()
 }
 
 func (that *VmessOut) GetOutboundStr() string {
 	if that.outbound == "" {
 		settings := that.getSettings()
 		stream := that.getStreamString()
-		that.outbound = fmt.Sprintf(that.getPattern(), settings, stream)
+		outStr := fmt.Sprintf(XrayOut, settings, stream)
+		that.outbound = that.setProtocolAndTag(outStr)
 	}
 	return that.outbound
+}
+
+func TestVmess() {
+	// rawUri := "vmess://{\"v\": \"2\", \"ps\": \"13|西班牙 02 | 1x ES\", \"add\": \"2d3e6s01.mcfront.xyz\", \"port\": \"31884\", \"aid\": 0, \"scy\": \"auto\", \"net\": \"tcp\", \"type\": \"none\", \"tls\": \"tls\", \"id\": \"82a934c7-d98d-4e08-b63f-827b132d42ac\", \"sni\": \"es04.lovemc.xyz\"}"
+	rawUri := "vmess://{\"add\":\"bobbykotick.rip\",\"host\":\"Kansas.bobbykotick.rip\",\"sni\":\"Kansas.bobbykotick.rip\",\"id\":\"D213ED80-199B-4A01-9D62-BBCBA9C16226\",\"net\":\"ws\",\"path\":\"\\/speedtest\",\"port\":\"443\",\"ps\":\"GetAFreeNode.com-Kansas\",\"tls\":\"tls\",\"fp\":\"android\",\"alpn\":\"h2,http\\/1.1\",\"v\":2,\"aid\":0,\"type\":\"none\"}"
+	vo := &VmessOut{}
+	vo.Parse(rawUri)
+	o := vo.GetOutboundStr()
+	fmt.Println(o)
 }

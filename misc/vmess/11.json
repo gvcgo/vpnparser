@@ -1,0 +1,60 @@
+{
+    "origin": {
+        "add": "kianoosh.ddns.net",
+        "aid": 0,
+        "host": "fn.mostafago.tk",
+        "id": "E97A1F83-B0C6-48E5-82E1-556292153FA7",
+        "net": "ws",
+        "path": "/speedtest",
+        "port": 443,
+        "ps": "github.com/freefq - \u7f8e\u56fdCloudFlare\u516c\u53f8CDN\u8282\u70b9 11",
+        "tls": "tls",
+        "type": "auto",
+        "security": "auto",
+        "skip-cert-verify": true,
+        "sni": ""
+    },
+    "outbounds": [
+        {
+            "tag": "proxy",
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "kianoosh.ddns.net",
+                        "port": 443,
+                        "users": [
+                            {
+                                "id": "E97A1F83-B0C6-48E5-82E1-556292153FA7",
+                                "alterId": 0,
+                                "security": "auto",
+                                "level": 8,
+                                "encryption": "",
+                                "flow": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "tls",
+                "wsSettings": {
+                    "path": "/speedtest",
+                    "headers": {
+                        "Host": "fn.mostafago.tk"
+                    }
+                },
+                "tlsSettings": {
+                    "allowInsecure": true,
+                    "serverName": "fn.mostafago.tk",
+                    "show": false
+                }
+            },
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            }
+        }
+    ]
+}

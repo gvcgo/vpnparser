@@ -92,28 +92,30 @@ HTTPSettings:
 
 var XrayStream string = `{
 	"network": "tcp",
-	"security": "none",
-	"tlsSettings": {},
-	"tcpSettings": {},
-	"kcpSettings": {},
-	"wsSettings": {},
-	"httpSettings": {},
-	"quicSettings": {},
-	"dsSettings": {},
-	"grpcSettings": {}
+	"security": "none"
 }`
 
 var XrayStreamTLS string = `{
 	"serverName": "xray.com",
-	"allowInsecure": false,
-	"alpn": ["h2", "http/1.1"],
-	"fingerprint": ""
+	"allowInsecure": true
 }`
 
-var XrayStreamTCP string = `{
+var XrayStreamTCPNone string = `{
 	"header": {
 	  "type": "none"
 	}
+}`
+
+var XrayStreamTCPHTTP string = `{
+  "header": {
+      "type": "http",
+      "request": {
+          "path": ["/"],
+          "headers": {
+              "Host": ["fast.com"]
+          }
+      }
+  }
 }`
 
 var XrayStreamTCPHeader string = `{
@@ -123,7 +125,6 @@ var XrayStreamTCPHeader string = `{
 }`
 
 var XrayStreamWebSocket string = `{
-	"acceptProxyProtocol": false,
 	"path": "/",
 	"headers": {
 	  "Host": "xray.com"
@@ -131,22 +132,11 @@ var XrayStreamWebSocket string = `{
 }`
 
 var XrayStreamHTTP string = `{
-	"host": ["xray.com"],
-	"path": "/random/path",
-	"read_idle_timeout": 10,
-	"health_check_timeout": 15,
-	"method": "PUT",
-	"headers": {
-	  "Header": ["value"]
-	}
+	"host": [""],
+	"path": ""
 }`
 
 var XrayStreamGRPC string = `{
-	"serviceName": "name",
-	"multiMode": false,
-	"user_agent": "custom user agent",
-	"idle_timeout": 60,
-	"health_check_timeout": 20,
-	"permit_without_stream": false,
-	"initial_windows_size": 0
+	"serviceName": "",
+	"multiMode": false
 }`

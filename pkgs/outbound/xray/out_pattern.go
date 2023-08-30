@@ -1,5 +1,11 @@
 package xray
 
+import (
+	"fmt"
+
+	"github.com/gogf/gf/encoding/gjson"
+)
+
 /*
 https://xtls.github.io/config/outbound.html#outboundobject
 
@@ -21,11 +27,17 @@ https://xtls.github.io/config/outbound.html#outboundobject
 */
 
 var XrayOut string = `{
-    "outbounds": [{
-		"sendThrough": "0.0.0.0",
-		"protocol": "协议名称",
-    "tag": "标识",
-		"settings": %s,
-		"streamSettings": %s
-	}]
+  "sendThrough": "0.0.0.0",
+  "protocol": "协议名称",
+  "tag": "标识",
+  "settings": %s,
+  "streamSettings": %s
 }`
+
+func GetPattern() string {
+	x := fmt.Sprintf(XrayOut, "{}", "{}")
+	j := gjson.New(x)
+	j.Set("outbounds.0.protocol", "vmess")
+	j.Set("outbounds.0.tag", "PROXY_OUT")
+	return j.MustToJsonIndentString()
+}
