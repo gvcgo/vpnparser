@@ -100,6 +100,14 @@ var XrayStreamTLS string = `{
 	"allowInsecure": true
 }`
 
+var XrayStreamReality string = `{
+  "shortId": "",
+  "fingerprint": "",
+  "serverName": "",
+  "publicKey": "",
+  "spiderX": ""
+}`
+
 var XrayStreamTCPNone string = `{
 	"header": {
 	  "type": "none"

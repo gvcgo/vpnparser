@@ -93,10 +93,6 @@ func (that *VlessOut) getStreamString() string {
 	stream := gjson.New(XrayStream)
 	stream.Set("network", that.Parser.Type)
 	stream.Set("security", that.Parser.Security)
-	path_ := that.Parser.Path
-	if path_ == "" {
-		path_ = that.Parser.SPX
-	}
 	host_ := that.Parser.Host
 	if host_ == "" {
 		host_ = that.Parser.SNI
@@ -107,13 +103,13 @@ func (that *VlessOut) getStreamString() string {
 			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
 		} else {
 			j := gjson.New(XrayStreamTCPHTTP)
-			j.Set("header.request.path.0", path_)
+			j.Set("header.request.path.0", that.Parser.Path)
 			j.Set("header.request.headers.Host.0", host_)
 			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonIndentString(), stream)
 		}
 	case "ws":
 		j := gjson.New(XrayStreamWebSocket)
-		j.Set("path", path_)
+		j.Set("path", that.Parser.Path)
 		j.Set("headers.Host", host_)
 		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonIndentString(), stream)
 	case "grpc":
@@ -146,6 +142,17 @@ func (that *VlessOut) getStreamString() string {
 		}
 		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
 	case "reality":
+		j := gjson.New(XrayStreamReality)
+		serverName := that.Parser.SNI
+		if serverName == "" {
+			serverName = that.Parser.Host
+		}
+		j.Set("serverName", serverName)
+		j.Set("shortId", that.Parser.SID)
+		j.Set("fingerprint", that.Parser.FP)
+		j.Set("spiderX", that.Parser.SPX)
+		j.Set("publicKey", that.Parser.PBK)
+		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
 	default:
 	}
 	return stream.MustToJsonIndentString()
