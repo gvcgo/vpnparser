@@ -50,6 +50,7 @@ func (that *ParserVless) Parse(rawUri string) {
 		that.Host = query.Get("host")
 		that.Mode = query.Get("mode")
 		that.PacketEncoding = query.Get("packetEncoding")
+		that.Path = query.Get("path")
 		that.PBK = query.Get("pbk")
 		that.Security = query.Get("security")
 		that.ServiceName = query.Get("serviceName")
