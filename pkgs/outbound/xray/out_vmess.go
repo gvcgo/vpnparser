@@ -106,7 +106,7 @@ func (that *VmessOut) getSettings() string {
 		security = that.Parser.SCY
 	}
 	j.Set("vnext.0.users.0.security", security)
-	return j.MustToJsonIndentString()
+	return j.MustToJsonString()
 }
 
 func (that *VmessOut) getStreamString() string {
@@ -121,22 +121,22 @@ func (that *VmessOut) getStreamString() string {
 			j := gjson.New(XrayStreamTCPHTTP)
 			j.Set("header.request.path.0", that.Parser.Path)
 			j.Set("header.request.headers.Host.0", that.Parser.Host)
-			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonIndentString(), stream)
+			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonString(), stream)
 		}
 	case "ws":
 		j := gjson.New(XrayStreamWebSocket)
 		j.Set("path", that.Parser.Path)
 		j.Set("headers.Host", that.Parser.Host)
-		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonIndentString(), stream)
+		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonString(), stream)
 	case "http":
 		j := gjson.New(XrayStreamHTTP)
 		j.Set("host.0", that.Parser.Host)
 		j.Set("path", that.Parser.Path)
-		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonIndentString(), stream)
+		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonString(), stream)
 	case "grpc":
 		j := gjson.New(XrayStreamGRPC)
 		j.Set("serviceName", that.Parser.Host)
-		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonIndentString(), stream)
+		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonString(), stream)
 	default:
 		return "{}"
 	}
@@ -154,9 +154,9 @@ func (that *VmessOut) getStreamString() string {
 		if that.Parser.FP != "" {
 			j.Set("fingerprint", that.Parser.FP)
 		}
-		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
+		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonString(), stream)
 	}
-	return stream.MustToJsonIndentString()
+	return stream.MustToJsonString()
 }
 
 func (that *VmessOut) setProtocolAndTag(outStr string) string {
@@ -182,5 +182,6 @@ func TestVmess() {
 	vo := &VmessOut{}
 	vo.Parse(rawUri)
 	o := vo.GetOutboundStr()
-	fmt.Println(o)
+	j := gjson.New(o)
+	fmt.Println(j.MustToJsonIndentString())
 }
