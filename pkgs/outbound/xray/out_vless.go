@@ -2,6 +2,7 @@ package xray
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/moqsien/vpnparser/pkgs/parser"
@@ -89,7 +90,65 @@ func (that *VlessOut) getSettings() string {
 }
 
 func (that *VlessOut) getStreamString() string {
-	return ""
+	stream := gjson.New(XrayStream)
+	stream.Set("network", that.Parser.Type)
+	stream.Set("security", that.Parser.Security)
+	path_ := that.Parser.Path
+	if path_ == "" {
+		path_ = that.Parser.SPX
+	}
+	host_ := that.Parser.Host
+	if host_ == "" {
+		host_ = that.Parser.SNI
+	}
+	switch that.Parser.Type {
+	case "tcp":
+		if that.Parser.HeaderType != "http" {
+			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
+		} else {
+			j := gjson.New(XrayStreamTCPHTTP)
+			j.Set("header.request.path.0", path_)
+			j.Set("header.request.headers.Host.0", host_)
+			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonIndentString(), stream)
+		}
+	case "ws":
+		j := gjson.New(XrayStreamWebSocket)
+		j.Set("path", path_)
+		j.Set("headers.Host", host_)
+		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonIndentString(), stream)
+	case "grpc":
+		j := gjson.New(XrayStreamGRPC)
+		j.Set("serviceName", that.Parser.ServiceName)
+		multiMode := false
+		if that.Parser.Mode == "multi" {
+			multiMode = true
+		}
+		j.Set("multiMode", multiMode)
+		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonIndentString(), stream)
+	default:
+		return "{}"
+	}
+
+	switch that.Parser.Security {
+	case "tls":
+		j := gjson.New(XrayStreamTLS)
+		serverName := that.Parser.SNI
+		if serverName == "" {
+			serverName = that.Parser.Host
+		}
+		j.Set("serverName", serverName)
+		if that.Parser.ALPN != "" {
+			aList := strings.Split(that.Parser.ALPN, ",")
+			j.Set("alpn", aList)
+		}
+		if that.Parser.FP != "" {
+			j.Set("fingerprint", that.Parser.FP)
+		}
+		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
+	case "reality":
+	default:
+	}
+	return stream.MustToJsonIndentString()
 }
 
 func (that *VlessOut) setProtocolAndTag(outStr string) string {

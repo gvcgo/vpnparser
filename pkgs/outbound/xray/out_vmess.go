@@ -116,31 +116,26 @@ func (that *VmessOut) getStreamString() string {
 	switch that.Parser.Net {
 	case "tcp":
 		if that.Parser.Type != "http" {
-			// stream.Set("tcpSetting", XrayStreamTCPNone)
 			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
 		} else {
 			j := gjson.New(XrayStreamTCPHTTP)
 			j.Set("header.request.path.0", that.Parser.Path)
 			j.Set("header.request.headers.Host.0", that.Parser.Host)
-			// stream.Set("tcpSetting", j.MustToJsonIndentString())
 			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonIndentString(), stream)
 		}
 	case "ws":
 		j := gjson.New(XrayStreamWebSocket)
 		j.Set("path", that.Parser.Path)
 		j.Set("headers.Host", that.Parser.Host)
-		// stream.Set("wsSettings", j.MustToJsonIndentString())
 		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonIndentString(), stream)
 	case "http":
 		j := gjson.New(XrayStreamHTTP)
 		j.Set("host.0", that.Parser.Host)
 		j.Set("path", that.Parser.Path)
-		// stream.Set("httpSettings", j.MustToJsonIndentString())
 		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonIndentString(), stream)
 	case "grpc":
 		j := gjson.New(XrayStreamGRPC)
 		j.Set("serviceName", that.Parser.Host)
-		// stream.Set("grpcSettings", j.MustToJsonIndentString())
 		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonIndentString(), stream)
 	default:
 		return "{}"
@@ -159,7 +154,6 @@ func (that *VmessOut) getStreamString() string {
 		if that.Parser.FP != "" {
 			j.Set("fingerprint", that.Parser.FP)
 		}
-		// stream.Set("tlsSettings", j.MustToJsonIndentString())
 		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonIndentString(), stream)
 	}
 	return stream.MustToJsonIndentString()
