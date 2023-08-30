@@ -81,11 +81,11 @@ func (that *VmessOut) Addr() string {
 	return that.Parser.GetAddr()
 }
 
-func (that *VmessOut) Host() string {
+func (that *VmessOut) Port() int {
 	if that.Parser == nil {
-		return ""
+		return 0
 	}
-	return that.Parser.GetHost()
+	return that.Parser.GetPort()
 }
 
 func (that *VmessOut) Scheme() string {

@@ -3,7 +3,7 @@ package outbound
 type IOutbound interface {
 	Parse(string)
 	Addr() string
-	Host() string
+	Port() int
 	Scheme() string
 	GetOutboundStr() string
 }

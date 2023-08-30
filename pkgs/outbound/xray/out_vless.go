@@ -1,5 +1,13 @@
 package xray
 
+import (
+	"fmt"
+
+	"github.com/gogf/gf/encoding/gjson"
+	"github.com/moqsien/vpnparser/pkgs/parser"
+	"github.com/moqsien/vpnparser/pkgs/utils"
+)
+
 /*
 https://xtls.github.io/config/outbounds/vless.html#outboundconfigurationobject
 
@@ -39,10 +47,64 @@ var XrayVless string = `{
 		  {
 			"id": "5783a3e7-e373-51cd-8642-c83782b807c5",
 			"encryption": "none",
-			"flow": "xtls-rprx-vision",
-			"level": 0
+			"flow": "xtls-rprx-vision"
 		  }
 		]
 	  }
 	]
 }`
+
+type VlessOut struct {
+	RawUri   string
+	Parser   *parser.ParserVless
+	outbound string
+}
+
+func (that *VlessOut) Addr() string {
+	if that.Parser == nil {
+		return ""
+	}
+	return that.Parser.GetAddr()
+}
+
+func (that *VlessOut) Port() int {
+	if that.Parser == nil {
+		return 0
+	}
+	return that.Parser.GetPort()
+}
+
+func (that *VlessOut) Scheme() string {
+	return parser.SchemeVless
+}
+
+func (that *VlessOut) getSettings() string {
+	j := gjson.New(XrayVless)
+	j.Set("vnext.0.address", that.Parser.Address)
+	j.Set("vnext.0.port", that.Parser.Port)
+	j.Set("vnext.0.users.0.id", that.Parser.UUID)
+	j.Set("vnext.0.users.0.encryption", that.Parser.Encryption)
+	j.Set("vnext.0.users.0.flow", that.Parser.Flow)
+	return j.MustToJsonIndentString()
+}
+
+func (that *VlessOut) getStreamString() string {
+	return ""
+}
+
+func (that *VlessOut) setProtocolAndTag(outStr string) string {
+	j := gjson.New(outStr)
+	j.Set("protocol", "vless")
+	j.Set("tag", utils.OutboundTag)
+	return j.MustToJsonIndentString()
+}
+
+func (that *VlessOut) GetOutboundStr() string {
+	if that.outbound == "" {
+		settings := that.getSettings()
+		stream := that.getStreamString()
+		outStr := fmt.Sprintf(XrayOut, settings, stream)
+		that.outbound = that.setProtocolAndTag(outStr)
+	}
+	return that.outbound
+}

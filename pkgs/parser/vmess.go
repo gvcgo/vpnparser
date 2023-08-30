@@ -71,17 +71,11 @@ func (that *ParserVmess) Parse(rawUri string) {
 }
 
 func (that *ParserVmess) GetAddr() string {
-	if that.Address == "" {
-		return ""
-	}
 	return that.Address
 }
 
-func (that *ParserVmess) GetHost() string {
-	if that.Address == "" || that.Port == 0 {
-		return ""
-	}
-	return fmt.Sprintf("%s:%d", that.Address, that.Port)
+func (that *ParserVmess) GetPort() int {
+	return that.Port
 }
 
 func (that *ParserVmess) Show() {
