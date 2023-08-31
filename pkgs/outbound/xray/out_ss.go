@@ -82,6 +82,10 @@ func (that *ShadowSocksOut) Scheme() string {
 	return parser.SchemeSS
 }
 
+func (that *ShadowSocksOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *ShadowSocksOut) getSettings() string {
 	j := gjson.New(XraySS)
 	j.Set("servers.0.address", that.Parser.Address)
@@ -99,6 +103,9 @@ func (that *ShadowSocksOut) setProtocolAndTag(outStr string) string {
 }
 
 func (that *ShadowSocksOut) GetOutboundStr() string {
+	if that.Parser.Address == "" && that.Parser.Port == 0 {
+		return ""
+	}
 	if that.outbound == "" {
 		settings := that.getSettings()
 		stream := PrepareStreamString(that.Parser.StreamField)

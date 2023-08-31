@@ -91,6 +91,10 @@ func (that *VmessOut) Scheme() string {
 	return parser.SchemeVmess
 }
 
+func (that *VmessOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *VmessOut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"
@@ -115,6 +119,9 @@ func (that *VmessOut) setProtocolAndTag(outStr string) string {
 }
 
 func (that *VmessOut) GetOutboundStr() string {
+	if that.Parser.Address == "" && that.Parser.Port == 0 {
+		return ""
+	}
 	if that.outbound == "" {
 		settings := that.getSettings()
 		stream := PrepareStreamString(that.Parser.StreamField)

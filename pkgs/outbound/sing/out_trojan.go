@@ -64,6 +64,10 @@ func (that *STrojanOut) Scheme() string {
 	return parser.SchemeTrojan
 }
 
+func (that *STrojanOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *STrojanOut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"

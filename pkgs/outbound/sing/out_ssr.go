@@ -83,6 +83,10 @@ func (that *SShadowSocksROut) Scheme() string {
 	return parser.SchemeSSR
 }
 
+func (that *SShadowSocksROut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *SShadowSocksROut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"

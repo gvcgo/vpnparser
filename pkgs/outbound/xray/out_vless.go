@@ -83,6 +83,10 @@ func (that *VlessOut) Scheme() string {
 	return parser.SchemeVless
 }
 
+func (that *VlessOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *VlessOut) getSettings() string {
 	j := gjson.New(XrayVless)
 	j.Set("vnext.0.address", that.Parser.Address)
@@ -104,6 +108,9 @@ func (that *VlessOut) setProtocolAndTag(outStr string) string {
 }
 
 func (that *VlessOut) GetOutboundStr() string {
+	if that.Parser.Address == "" && that.Parser.Port == 0 {
+		return ""
+	}
 	if that.outbound == "" {
 		settings := that.getSettings()
 		stream := PrepareStreamString(that.Parser.StreamField)

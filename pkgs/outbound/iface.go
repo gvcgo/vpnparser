@@ -6,4 +6,5 @@ type IOutbound interface {
 	Port() int
 	Scheme() string
 	GetOutboundStr() string
+	GetRawUri() string
 }

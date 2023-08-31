@@ -92,6 +92,10 @@ func (that *SVmessOut) Scheme() string {
 	return parser.SchemeVmess
 }
 
+func (that *SVmessOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *SVmessOut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"

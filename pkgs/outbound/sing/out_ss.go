@@ -88,6 +88,10 @@ func (that *SShadowSocksOut) Scheme() string {
 	return parser.SchemeSS
 }
 
+func (that *SShadowSocksOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *SShadowSocksOut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"

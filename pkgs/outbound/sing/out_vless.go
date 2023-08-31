@@ -67,6 +67,10 @@ func (that *SVlessOut) Scheme() string {
 	return parser.SchemeVless
 }
 
+func (that *SVlessOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *SVlessOut) getSettings() string {
 	if that.Parser.Address == "" || that.Parser.Port == 0 {
 		return "{}"

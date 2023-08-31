@@ -63,6 +63,10 @@ func (that *TrojanOut) Scheme() string {
 	return parser.SchemeTrojan
 }
 
+func (that *TrojanOut) GetRawUri() string {
+	return that.RawUri
+}
+
 func (that *TrojanOut) getSettings() string {
 	j := gjson.New(XrayTrojan)
 	j.Set("servers.0.address", that.Parser.Address)
@@ -79,6 +83,9 @@ func (that *TrojanOut) setProtocolAndTag(outStr string) string {
 }
 
 func (that *TrojanOut) GetOutboundStr() string {
+	if that.Parser.Address == "" && that.Parser.Port == 0 {
+		return ""
+	}
 	if that.outbound == "" {
 		settings := that.getSettings()
 		stream := PrepareStreamString(that.Parser.StreamField)
