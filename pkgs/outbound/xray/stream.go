@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/moqsien/vpnparser/pkgs/parser"
 	"github.com/moqsien/vpnparser/pkgs/utils"
 )
@@ -213,6 +214,9 @@ func PrepareStreamString(sf *parser.StreamField) string {
 		}
 		if sf.Fingerprint != "" {
 			j.Set("fingerprint", sf.Fingerprint)
+		}
+		if sf.TLSAllowInsecure != "" {
+			j.Set("allowInsecure", gconv.Bool(sf.TLSAllowInsecure))
 		}
 		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonString(), stream)
 	case "reality":

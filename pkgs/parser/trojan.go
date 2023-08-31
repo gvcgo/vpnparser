@@ -17,13 +17,7 @@ type ParserTrojan struct {
 	Port     int
 	Password string
 
-	AllowInsecure string
-	HeaderType    string
-	Path          string
-	Peer          string
-	Security      string
-	SNI           string
-	Type          string
+	*StreamField
 }
 
 func (that *ParserTrojan) Parse(rawUri string) {
@@ -33,13 +27,30 @@ func (that *ParserTrojan) Parse(rawUri string) {
 		that.Password = u.User.Username()
 
 		query := u.Query()
-		that.AllowInsecure = query.Get("allowInsecure")
-		that.HeaderType = query.Get("headerType")
-		that.Path = query.Get("path")
-		that.Peer = query.Get("peer")
-		that.Security = query.Get("security")
-		that.SNI = query.Get("sni")
-		that.Type = query.Get("type")
+
+		that.StreamField = &StreamField{
+			Network:          query.Get("type"),
+			Host:             query.Get("peer"),
+			Path:             query.Get("path"),
+			StreamSecurity:   query.Get("security"),
+			ServerName:       query.Get("sni"),
+			TCPHeaderType:    query.Get("headerType"),
+			TLSAllowInsecure: query.Get("allowInsecure"),
+		}
+	}
+	if that.TLSAllowInsecure != "" && that.ServerName != "" {
+		if that.Network == "" {
+			that.Network = "tcp"
+		}
+		if that.StreamSecurity == "" {
+			that.StreamSecurity = "tls"
+		}
+		if that.Host == "" {
+			that.Host = that.ServerName
+		}
+		if that.ServerName == "" {
+			that.ServerName = that.Address
+		}
 	}
 }
 
@@ -70,8 +81,8 @@ func TrojanTest() {
 		if p.Address != "" {
 			i++
 		}
-		if p.Security != "" {
-			fmt.Println(p.Type, p.Security, p.Path, p.SNI, p.HeaderType, p.AllowInsecure)
+		if p.StreamSecurity != "" {
+			fmt.Println(p.Network, p.StreamSecurity, p.Path, p.ServerName, p.TCPHeaderType, p.TLSAllowInsecure)
 		}
 	}
 	fmt.Println("total: ", i, len(t.Trojan))
