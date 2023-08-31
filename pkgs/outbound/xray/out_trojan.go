@@ -1,5 +1,9 @@
 package xray
 
+import (
+	"github.com/moqsien/vpnparser/pkgs/parser"
+)
+
 /*
 https://xtls.github.io/config/outbounds/trojan.html#outboundconfigurationobject
 
@@ -27,3 +31,9 @@ var XrayTrojan string = `{
 	  }
 	]
 }`
+
+type TrojanOut struct {
+	RawUri   string
+	Parser   *parser.ParserTrojan
+	outbound string
+}

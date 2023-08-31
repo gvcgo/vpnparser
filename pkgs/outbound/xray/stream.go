@@ -1,5 +1,13 @@
 package xray
 
+import (
+	"strings"
+
+	"github.com/gogf/gf/encoding/gjson"
+	"github.com/moqsien/vpnparser/pkgs/parser"
+	"github.com/moqsien/vpnparser/pkgs/utils"
+)
+
 /*
 https://xtls.github.io/config/transport.html#streamsettingsobject
 
@@ -148,3 +156,78 @@ var XrayStreamGRPC string = `{
 	"serviceName": "",
 	"multiMode": false
 }`
+
+func PrepareStreamString(sf *parser.StreamField) string {
+	stream := gjson.New(XrayStream)
+	stream.Set("network", sf.Network)
+	stream.Set("security", sf.StreamSecurity)
+
+	switch sf.Network {
+	case "tcp":
+		if sf.TCPHeaderType != "http" {
+			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
+		} else {
+			j := gjson.New(XrayStreamTCPHTTP)
+			j.Set("header.request.path.0", sf.Path)
+			j.Set("header.request.headers.Host.0", sf.Host)
+			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonString(), stream)
+		}
+	case "ws":
+		j := gjson.New(XrayStreamWebSocket)
+		j.Set("path", sf.Path)
+		j.Set("headers.Host", sf.Host)
+		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonString(), stream)
+	case "http":
+		j := gjson.New(XrayStreamHTTP)
+		j.Set("host.0", sf.Host)
+		j.Set("path", sf.Path)
+		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonString(), stream)
+	case "grpc":
+		j := gjson.New(XrayStreamGRPC)
+		serviceName := sf.GRPCServiceName
+		if serviceName == "" {
+			serviceName = sf.Host
+		}
+		j.Set("serviceName", serviceName)
+		multiMode := false
+		if sf.GRPCMultiMode == "multi" {
+			multiMode = true
+		}
+		j.Set("multiMode", multiMode)
+		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonString(), stream)
+	default:
+		return "{}"
+	}
+
+	switch sf.StreamSecurity {
+	case "tls":
+		j := gjson.New(XrayStreamTLS)
+		serverName := sf.ServerName
+		if serverName == "" {
+			serverName = sf.Host
+		}
+		j.Set("serverName", serverName)
+		if sf.TLSALPN != "" {
+			aList := strings.Split(sf.TLSALPN, ",")
+			j.Set("alpn", aList)
+		}
+		if sf.Fingerprint != "" {
+			j.Set("fingerprint", sf.Fingerprint)
+		}
+		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonString(), stream)
+	case "reality":
+		j := gjson.New(XrayStreamReality)
+		serverName := sf.ServerName
+		if serverName == "" {
+			serverName = sf.Host
+		}
+		j.Set("serverName", serverName)
+		j.Set("shortId", sf.RealityShortId)
+		j.Set("fingerprint", sf.Fingerprint)
+		j.Set("spiderX", sf.RealitySpiderX)
+		j.Set("publicKey", sf.RealityPublicKey)
+		stream = utils.SetJsonObjectByString("realitySettings", j.MustToJsonString(), stream)
+	default:
+	}
+	return stream.MustToJsonString()
+}

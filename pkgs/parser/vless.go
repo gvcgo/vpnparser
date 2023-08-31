@@ -33,6 +33,8 @@ type ParserVless struct {
 	SNI            string
 	SPX            string
 	Type           string
+
+	*StreamField
 }
 
 func (that *ParserVless) Parse(rawUri string) {
@@ -44,20 +46,22 @@ func (that *ParserVless) Parse(rawUri string) {
 		that.Encryption = query.Get("encryption")
 		that.Flow = query.Get("flow")
 
-		that.ALPN = query.Get("alpn")
-		that.FP = query.Get("fp")
-		that.HeaderType = query.Get("headerType")
-		that.Host = query.Get("host")
-		that.Mode = query.Get("mode")
-		that.PacketEncoding = query.Get("packetEncoding")
-		that.Path = query.Get("path")
-		that.PBK = query.Get("pbk")
-		that.Security = query.Get("security")
-		that.ServiceName = query.Get("serviceName")
-		that.SID = query.Get("sid")
-		that.SNI = query.Get("sni")
-		that.SPX = query.Get("spx")
-		that.Type = query.Get("type")
+		that.StreamField = &StreamField{
+			Network:          query.Get("type"),
+			StreamSecurity:   query.Get("security"),
+			Path:             query.Get("path"),
+			Host:             query.Get("host"),
+			GRPCServiceName:  query.Get("serviceName"),
+			GRPCMultiMode:    query.Get("mode"),
+			ServerName:       query.Get("sni"),
+			TLSALPN:          query.Get("alpn"),
+			Fingerprint:      query.Get("fp"),
+			RealityShortId:   query.Get("sid"),
+			RealitySpiderX:   query.Get("spx"),
+			RealityPublicKey: query.Get("pbk"),
+			PacketEncoding:   query.Get("packetEncoding"),
+			TCPHeaderType:    query.Get("headerType"),
+		}
 	}
 }
 
@@ -70,7 +74,7 @@ func (that *ParserVless) GetPort() int {
 }
 
 func (that *ParserVless) Show() {
-	fmt.Printf("addr: %s, port: %v, uuid: %s, serviceName: %s", that.Address, that.Port, that.UUID, that.ServiceName)
+	fmt.Printf("addr: %s, port: %v, uuid: %s", that.Address, that.Port, that.UUID)
 }
 
 func VlessTest() {

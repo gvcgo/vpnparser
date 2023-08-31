@@ -14,27 +14,21 @@ vmess: ['v', 'ps', 'add', 'port', 'aid', 'scy', 'net', 'type', 'tls', 'id', 'sni
 */
 
 type ParserVmess struct {
-	Address string
-	Port    int
-	UUID    string
+	Address  string
+	Port     int
+	UUID     string
+	Security string
+	AID      string
 
-	AID            string
-	ALPN           string
-	FP             string
-	Host           string
-	Net            string
 	Nation         string
 	Path           string
 	PS             string
-	SCY            string
-	Security       string
 	ServerPort     string
 	SkipCertVerify bool
-	SNI            string
-	TLS            string
-	Type           string
 	TestName       string
 	V              string
+
+	*StreamField
 }
 
 func (that *ParserVmess) Parse(rawUri string) {
@@ -50,24 +44,35 @@ func (that *ParserVmess) Parse(rawUri string) {
 	}
 	that.Port = j.GetInt("port")
 	that.UUID = j.GetString("id")
-
 	that.AID = j.GetString("aid")
-	that.ALPN = j.GetString("alpn")
-	that.FP = j.GetString("fp")
-	that.Host = j.GetString("host")
-	that.Net = j.GetString("net")
-	that.Nation = j.GetString("nation")
-	that.Path = j.GetString("path")
-	that.PS = j.GetString("ps")
-	that.SCY = j.GetString("scy")
 	that.Security = j.GetString("security")
+	that.Security = j.GetString("security")
+	if that.Security == "" {
+		that.Security = j.GetString("scy")
+	}
+
+	that.Nation = j.GetString("nation")
+	that.PS = j.GetString("ps")
 	that.ServerPort = j.GetString("serverPort")
 	that.SkipCertVerify = j.GetBool("skip-cert-verify")
-	that.SNI = j.GetString("sni")
-	that.TLS = j.GetString("tls")
-	that.Type = j.GetString("type")
 	that.TestName = j.GetString("test_name")
 	that.V = j.GetString("v")
+
+	that.StreamField = &StreamField{}
+	that.StreamField.Network = j.GetString("net")
+	that.StreamField.StreamSecurity = j.GetString("tls")
+	that.StreamField.Path = j.GetString("path")
+	that.StreamField.Host = j.GetString("host")
+	// that.StreamField.GRPCServiceName = j.GetString("serviceName")
+	// that.StreamField.GRPCMultiMode = j.GetString("mode")
+	that.StreamField.ServerName = j.GetString("sni")
+	that.StreamField.TCPHeaderType = j.GetString("type")
+	that.StreamField.TLSALPN = j.GetString("alpn")
+	that.StreamField.Fingerprint = j.GetString("fp")
+
+	// that.StreamField.RealityShortId = j.GetString("sid")
+	// that.StreamField.RealitySpiderX = j.GetString("spx")
+	// that.StreamField.RealityPublicKey = j.GetString("pbk")
 }
 
 func (that *ParserVmess) GetAddr() string {
@@ -79,7 +84,7 @@ func (that *ParserVmess) GetPort() int {
 }
 
 func (that *ParserVmess) Show() {
-	fmt.Printf("addr: %s, port: %v, uuid: %s, net: %s", that.Address, that.Port, that.UUID, that.Net)
+	fmt.Printf("addr: %s, port: %v, uuid: %s, net: %s", that.Address, that.Port, that.UUID, that.Network)
 }
 
 func VmessTest() {
@@ -93,8 +98,8 @@ func VmessTest() {
 	for _, rawUri := range v.Vmess {
 		p := &ParserVmess{}
 		p.Parse(rawUri)
-		if p.ALPN != "" {
-			fmt.Println(p.ALPN)
+		if p.TLSALPN != "" {
+			fmt.Println(p.TLSALPN)
 		}
 	}
 }

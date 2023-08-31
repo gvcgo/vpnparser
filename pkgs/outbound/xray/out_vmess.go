@@ -2,7 +2,6 @@ package xray
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/util/gconv"
@@ -101,62 +100,11 @@ func (that *VmessOut) getSettings() string {
 	j.Set("vnext.0.port", that.Parser.Port)
 	j.Set("vnext.0.users.0.id", that.Parser.UUID)
 	j.Set("vnext.0.users.0.alterId", gconv.Int(that.Parser.AID))
-	security := that.Parser.Security
-	if security == "" && that.Parser.SCY != "" {
-		security = that.Parser.SCY
+	if that.Parser.Security == "" {
+		that.Parser.Security = "none"
 	}
-	j.Set("vnext.0.users.0.security", security)
+	j.Set("vnext.0.users.0.security", that.Parser.Security)
 	return j.MustToJsonString()
-}
-
-func (that *VmessOut) getStreamString() string {
-	stream := gjson.New(XrayStream)
-	stream.Set("network", that.Parser.Net)
-	stream.Set("security", that.Parser.TLS)
-	switch that.Parser.Net {
-	case "tcp":
-		if that.Parser.Type != "http" {
-			stream = utils.SetJsonObjectByString("tcpSetting", XrayStreamTCPNone, stream)
-		} else {
-			j := gjson.New(XrayStreamTCPHTTP)
-			j.Set("header.request.path.0", that.Parser.Path)
-			j.Set("header.request.headers.Host.0", that.Parser.Host)
-			stream = utils.SetJsonObjectByString("tcpSetting", j.MustToJsonString(), stream)
-		}
-	case "ws":
-		j := gjson.New(XrayStreamWebSocket)
-		j.Set("path", that.Parser.Path)
-		j.Set("headers.Host", that.Parser.Host)
-		stream = utils.SetJsonObjectByString("wsSettings", j.MustToJsonString(), stream)
-	case "http":
-		j := gjson.New(XrayStreamHTTP)
-		j.Set("host.0", that.Parser.Host)
-		j.Set("path", that.Parser.Path)
-		stream = utils.SetJsonObjectByString("httpSettings", j.MustToJsonString(), stream)
-	case "grpc":
-		j := gjson.New(XrayStreamGRPC)
-		j.Set("serviceName", that.Parser.Host)
-		stream = utils.SetJsonObjectByString("grpcSettings", j.MustToJsonString(), stream)
-	default:
-		return "{}"
-	}
-	if that.Parser.TLS != "" {
-		j := gjson.New(XrayStreamTLS)
-		serverName := that.Parser.SNI
-		if serverName == "" {
-			serverName = that.Parser.Host
-		}
-		j.Set("serverName", serverName)
-		if that.Parser.ALPN != "" {
-			aList := strings.Split(that.Parser.ALPN, ",")
-			j.Set("alpn", aList)
-		}
-		if that.Parser.FP != "" {
-			j.Set("fingerprint", that.Parser.FP)
-		}
-		stream = utils.SetJsonObjectByString("tlsSettings", j.MustToJsonString(), stream)
-	}
-	return stream.MustToJsonString()
 }
 
 func (that *VmessOut) setProtocolAndTag(outStr string) string {
@@ -169,7 +117,7 @@ func (that *VmessOut) setProtocolAndTag(outStr string) string {
 func (that *VmessOut) GetOutboundStr() string {
 	if that.outbound == "" {
 		settings := that.getSettings()
-		stream := that.getStreamString()
+		stream := PrepareStreamString(that.Parser.StreamField)
 		outStr := fmt.Sprintf(XrayOut, settings, stream)
 		that.outbound = that.setProtocolAndTag(outStr)
 	}
@@ -177,8 +125,8 @@ func (that *VmessOut) GetOutboundStr() string {
 }
 
 func TestVmess() {
-	// rawUri := "vmess://{\"v\": \"2\", \"ps\": \"13|西班牙 02 | 1x ES\", \"add\": \"2d3e6s01.mcfront.xyz\", \"port\": \"31884\", \"aid\": 0, \"scy\": \"auto\", \"net\": \"tcp\", \"type\": \"none\", \"tls\": \"tls\", \"id\": \"82a934c7-d98d-4e08-b63f-827b132d42ac\", \"sni\": \"es04.lovemc.xyz\"}"
-	rawUri := "vmess://{\"add\":\"bobbykotick.rip\",\"host\":\"Kansas.bobbykotick.rip\",\"sni\":\"Kansas.bobbykotick.rip\",\"id\":\"D213ED80-199B-4A01-9D62-BBCBA9C16226\",\"net\":\"ws\",\"path\":\"\\/speedtest\",\"port\":\"443\",\"ps\":\"GetAFreeNode.com-Kansas\",\"tls\":\"tls\",\"fp\":\"android\",\"alpn\":\"h2,http\\/1.1\",\"v\":2,\"aid\":0,\"type\":\"none\"}"
+	rawUri := "vmess://{\"v\": \"2\", \"ps\": \"13|西班牙 02 | 1x ES\", \"add\": \"2d3e6s01.mcfront.xyz\", \"port\": \"31884\", \"aid\": 0, \"scy\": \"auto\", \"net\": \"tcp\", \"type\": \"none\", \"tls\": \"tls\", \"id\": \"82a934c7-d98d-4e08-b63f-827b132d42ac\", \"sni\": \"es04.lovemc.xyz\"}"
+	// rawUri := "vmess://{\"add\":\"bobbykotick.rip\",\"host\":\"Kansas.bobbykotick.rip\",\"sni\":\"Kansas.bobbykotick.rip\",\"id\":\"D213ED80-199B-4A01-9D62-BBCBA9C16226\",\"net\":\"ws\",\"path\":\"\\/speedtest\",\"port\":\"443\",\"ps\":\"GetAFreeNode.com-Kansas\",\"tls\":\"tls\",\"fp\":\"android\",\"alpn\":\"h2,http\\/1.1\",\"v\":2,\"aid\":0,\"type\":\"none\"}"
 	vo := &VmessOut{}
 	vo.Parse(rawUri)
 	o := vo.GetOutboundStr()

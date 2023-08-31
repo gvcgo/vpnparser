@@ -1,15 +1,15 @@
 package main
 
 import (
-	_ "github.com/moqsien/vpnparser/pkgs/outbound/xray"
-	"github.com/moqsien/vpnparser/pkgs/parser"
+	"github.com/moqsien/vpnparser/pkgs/outbound/xray"
+	_ "github.com/moqsien/vpnparser/pkgs/parser"
 )
 
 func main() {
 	// parser.VlessTest()
-	parser.TrojanTest()
+	// parser.TrojanTest()
 	// s := xray.GetPattern()
 	// fmt.Println(s)
 	// xray.TestVmess()
-	// xray.TestVless()
+	xray.TestVless()
 }
