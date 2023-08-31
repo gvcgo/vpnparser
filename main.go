@@ -14,5 +14,8 @@ func main() {
 	// xray.TestVmess()
 	// xray.TestTrojan()
 	// xray.TestSS()
-	sing.TestVmess()
+	// sing.TestVmess()
+	// sing.TestVless()
+	// sing.TestTrojan()
+	sing.TestSS()
 }
