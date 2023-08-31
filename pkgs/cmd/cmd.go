@@ -16,8 +16,8 @@ type App struct {
 func New() *App {
 	return &App{
 		cmd: &cli.App{
-			Usage:       "gscraper <Command> <SubCommand>...",
-			Description: "gscraper, download files from github for gvc.",
+			Usage:       "vpnparser <Command> <SubCommand>...",
+			Description: "vpnparser, download files from github for gvc.",
 			Commands:    []*cli.Command{},
 		},
 	}
