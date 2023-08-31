@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/gogf/gf v1.16.9
-	github.com/moqsien/goutils v0.3.0
+	github.com/moqsien/goutils v0.3.1
 )
 
 require (

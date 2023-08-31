@@ -9,13 +9,16 @@ import (
 func main() {
 	// parser.VlessTest()
 	// parser.TrojanTest()
+	// parser.SSRTest()
 	// s := xray.GetPattern()
 	// fmt.Println(s)
 	// xray.TestVmess()
 	// xray.TestTrojan()
 	// xray.TestSS()
+
 	// sing.TestVmess()
 	// sing.TestVless()
 	// sing.TestTrojan()
-	sing.TestSS()
+	// sing.TestSS()
+	sing.TestSSR()
 }
