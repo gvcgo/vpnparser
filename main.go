@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/moqsien/vpnparser/pkgs/outbound/sing"
+	"github.com/moqsien/vpnparser/pkgs/cmd"
+	_ "github.com/moqsien/vpnparser/pkgs/outbound/sing"
 	_ "github.com/moqsien/vpnparser/pkgs/outbound/xray"
 	_ "github.com/moqsien/vpnparser/pkgs/parser"
 )
@@ -20,5 +21,5 @@ func main() {
 	// sing.TestVless()
 	// sing.TestTrojan()
 	// sing.TestSS()
-	sing.TestSSR()
+	cmd.StartApp()
 }
