@@ -135,12 +135,6 @@ var XrayStreamTCPHTTP string = `{
   }
 }`
 
-var XrayStreamTCPHeader string = `{
-	"type": "http",
-	"request": {},
-	"response": {}
-}`
-
 var XrayStreamWebSocket string = `{
 	"path": "/",
 	"headers": {
