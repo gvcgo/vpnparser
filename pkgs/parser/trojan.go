@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+
+	"github.com/moqsien/goutils/pkgs/gtui"
 )
 
 /*
@@ -37,8 +39,13 @@ func (that *ParserTrojan) Parse(rawUri string) {
 			TCPHeaderType:    query.Get("headerType"),
 			TLSAllowInsecure: query.Get("allowInsecure"),
 		}
+	} else {
+		gtui.PrintError(err)
+		fmt.Println(rawUri)
+		return
 	}
-	if that.TLSAllowInsecure != "" && that.ServerName != "" {
+
+	if that.StreamField.TLSAllowInsecure != "" && that.StreamField.ServerName != "" {
 		if that.Network == "" {
 			that.Network = "tcp"
 		}
