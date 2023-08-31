@@ -20,3 +20,12 @@ func SetJsonObjectByString(key, value string, gJSON *gjson.Json) (newGJSON *gjso
 	result := strings.ReplaceAll(gJSON.MustToJsonString(), fmt.Sprintf(`"%s"`, tempValue), value)
 	return gjson.New(result)
 }
+
+func ParseScheme(rawUri string) (scheme string) {
+	sp := "://"
+	sList := strings.Split(rawUri, sp)
+	if len(sList) == 2 {
+		scheme = sList[0] + sp
+	}
+	return
+}
