@@ -70,16 +70,17 @@ func (that *ParserSSR) Parse(rawUri string) {
 }
 
 func (that *ParserSSR) parseParams(s string) {
+	s = strings.ReplaceAll(s, "+", "-")
+	s = strings.ReplaceAll(s, "/", "_")
 	testUrl := fmt.Sprintf("https://www.test.com/?%s", s)
 	if u, err := url.Parse(testUrl); err == nil {
 		that.OBFSParam = u.Query().Get("obfsparam")
 		if that.OBFSParam != "" {
 			that.OBFSParam = crypt.DecodeBase64(that.OBFSParam)
 		}
-		protoParam, _ := url.QueryUnescape(u.Query().Get("protoparam"))
-		fmt.Println(protoParam)
-		if protoParam != "" {
-			that.ProtoParam = crypt.DecodeBase64(protoParam)
+		that.ProtoParam = u.Query().Get("protoparam")
+		if that.ProtoParam != "" {
+			that.ProtoParam = crypt.DecodeBase64(that.ProtoParam)
 		}
 	}
 }
