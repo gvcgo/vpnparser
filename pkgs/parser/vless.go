@@ -19,21 +19,6 @@ type ParserVless struct {
 	Encryption string
 	Flow       string
 
-	ALPN           string
-	FP             string
-	HeaderType     string
-	Host           string
-	Mode           string
-	PacketEncoding string
-	Path           string
-	PBK            string
-	Security       string
-	ServiceName    string
-	SID            string
-	SNI            string
-	SPX            string
-	Type           string
-
 	*StreamField
 }
 
@@ -74,7 +59,10 @@ func (that *ParserVless) GetPort() int {
 }
 
 func (that *ParserVless) Show() {
-	fmt.Printf("addr: %s, port: %v, uuid: %s", that.Address, that.Port, that.UUID)
+	fmt.Printf("addr: %s, port: %v, uuid: %s\n",
+		that.Address,
+		that.Port,
+		that.UUID)
 }
 
 func VlessTest() {
@@ -90,7 +78,7 @@ func VlessTest() {
 		p := &ParserVless{}
 		p.Parse(rawUri)
 		if p.Address != "" {
-			fmt.Println(p.Flow, p.Type)
+			fmt.Println(p.Flow, p.Network)
 			i++
 		}
 	}

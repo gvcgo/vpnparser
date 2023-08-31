@@ -11,5 +11,6 @@ func main() {
 	// s := xray.GetPattern()
 	// fmt.Println(s)
 	// xray.TestVmess()
-	xray.TestTrojan()
+	// xray.TestTrojan()
+	xray.TestSS()
 }

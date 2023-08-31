@@ -63,7 +63,10 @@ func (that *ParserTrojan) GetPort() int {
 }
 
 func (that *ParserTrojan) Show() {
-	fmt.Printf("addr: %s, port: %v, password: %s", that.Address, that.Port, that.Password)
+	fmt.Printf("addr: %s, port: %v, password: %s\n",
+		that.Address,
+		that.Port,
+		that.Password)
 }
 
 func TrojanTest() {
