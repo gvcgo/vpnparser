@@ -37,6 +37,15 @@ type ParserSS struct {
 	Port     int
 	Method   string
 	Password string
+
+	Host     string
+	Mode     string
+	Mux      string
+	Path     string
+	Plugin   string
+	OBFS     string
+	OBFSHost string
+
 	*StreamField
 }
 
@@ -54,6 +63,15 @@ func (that *ParserSS) Parse(rawUri string) {
 			that.Method = "none"
 		}
 		that.Password, _ = u.User.Password()
+
+		query := u.Query()
+		that.Host = query.Get("host")
+		that.Mode = query.Get("mode")
+		that.Mux = query.Get("mux")
+		that.Path = query.Get("path")
+		that.Plugin = query.Get("plugin")
+		that.OBFS = query.Get("obfs")
+		that.OBFSHost = query.Get("obfs-host")
 	}
 }
 
