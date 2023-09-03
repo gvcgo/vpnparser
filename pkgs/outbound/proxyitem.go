@@ -12,7 +12,7 @@ import (
 type ProxyItem struct {
 	Address      string     `json:"address"`
 	Port         int        `json:"port"`
-	RTT          int        `json:"rtt"`
+	RTT          int64      `json:"rtt"`
 	RawUri       string     `json:"raw_uri"`
 	Outbound     string     `json:"outbound"`
 	OutboundType ClientType `json:"outbound_type"`
