@@ -37,6 +37,7 @@ type ProxyItem struct {
 	Port         int        `json:"port"`
 	RTT          int64      `json:"rtt"`
 	RawUri       string     `json:"raw_uri"`
+	Location     string     `json:"location"`
 	Outbound     string     `json:"outbound"`
 	OutboundType ClientType `json:"outbound_type"`
 }
