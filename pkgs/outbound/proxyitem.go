@@ -10,6 +10,28 @@ import (
 	"github.com/moqsien/vpnparser/pkgs/utils"
 )
 
+var ShadowSocksMethodOnlyBySing = []string{
+	"aes-256-cfb",
+	"aes-128-ctr",
+	"aes-192-ctr",
+	"aes-256-ctr",
+	"aes-128-cfb",
+	"aes-192-cfb",
+	"rc4-md5",
+	"rc4",
+	"chacha20-ietf",
+	"xchacha20",
+}
+
+func EnableSingBox(rawUri string) bool {
+	for _, m := range ShadowSocksMethodOnlyBySing {
+		if strings.Contains(rawUri, m) {
+			return true
+		}
+	}
+	return false
+}
+
 type ProxyItem struct {
 	Address      string     `json:"address"`
 	Port         int        `json:"port"`
@@ -35,6 +57,9 @@ func (that *ProxyItem) parse() bool {
 	scheme := utils.ParseScheme(that.RawUri)
 	var ob IOutbound
 	if scheme == parser.SchemeSSR || (scheme == parser.SchemeSS && strings.Contains(that.RawUri, "plugin=")) {
+		that.OutboundType = SingBox
+		ob = GetOutbound(SingBox, that.RawUri)
+	} else if scheme == parser.SchemeSS && EnableSingBox(that.RawUri) {
 		that.OutboundType = SingBox
 		ob = GetOutbound(SingBox, that.RawUri)
 	} else {
