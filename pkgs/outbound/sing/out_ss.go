@@ -133,7 +133,7 @@ func (that *SShadowSocksOut) GetOutboundStr() string {
 			return ""
 		}
 		cnf := gjson.New(settings)
-		cnf = PrepareStreamStr(cnf, that.Parser.StreamField)
+		// cnf = PrepareStreamStr(cnf, that.Parser.StreamField)
 		that.outbound = cnf.MustToJsonString()
 	}
 	return that.outbound

@@ -1,7 +1,10 @@
 package sing
 
 import (
+	"strings"
+
 	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/moqsien/vpnparser/pkgs/parser"
 	"github.com/moqsien/vpnparser/pkgs/utils"
 )
@@ -155,39 +158,39 @@ func PrepareStreamStr(cnf *gjson.Json, sf *parser.StreamField) (result *gjson.Js
 	default:
 		tp = "{}"
 	}
-	result = utils.SetJsonObjectByString("transport", tp, cnf)
+	cnf = utils.SetJsonObjectByString("transport", tp, cnf)
 
-	// var tlsStr string
-	// switch sf.StreamSecurity {
-	// case "tls", "reality":
-	// 	j := gjson.New(SingTLS)
-	// 	j.Set("server_name", sf.ServerName)
-	// 	allowInsecure := true
-	// 	if sf.TLSAllowInsecure != "" {
-	// 		allowInsecure = gconv.Bool(sf.TLSAllowInsecure)
-	// 	}
-	// 	j.Set("insecure", allowInsecure)
-	// 	if sf.TLSALPN != "" {
-	// 		j.Set("alpn", strings.Split(sf.TLSALPN, ","))
-	// 	}
-	// 	if sf.Fingerprint != "" {
-	// 		utls := gjson.New(SinguTLS)
-	// 		utls.Set("enabled", true)
-	// 		utls.Set("fingerprint", sf.Fingerprint)
-	// 		j = utils.SetJsonObjectByString("utls", utls.MustToJsonString(), j)
-	// 	}
+	var tlsStr string
+	switch sf.StreamSecurity {
+	case "tls", "reality":
+		j := gjson.New(SingTLS)
+		j.Set("server_name", sf.ServerName)
+		allowInsecure := true
+		if sf.TLSAllowInsecure != "" {
+			allowInsecure = gconv.Bool(sf.TLSAllowInsecure)
+		}
+		j.Set("insecure", allowInsecure)
+		if sf.TLSALPN != "" {
+			j.Set("alpn", strings.Split(sf.TLSALPN, ","))
+		}
+		if sf.Fingerprint != "" {
+			utls := gjson.New(SinguTLS)
+			utls.Set("enabled", true)
+			utls.Set("fingerprint", sf.Fingerprint)
+			j = utils.SetJsonObjectByString("utls", utls.MustToJsonString(), j)
+		}
 
-	// 	if sf.RealityShortId != "" && sf.RealityPublicKey != "" {
-	// 		reality := gjson.New(SingReality)
-	// 		reality.Set("short_id", sf.RealityShortId)
-	// 		reality.Set("public_key", sf.RealityPublicKey)
-	// 		reality.Set("enabled", true)
-	// 		j = utils.SetJsonObjectByString("reality", reality.MustToJsonString(), j)
-	// 	}
-	// 	tlsStr = j.MustToJsonString()
-	// default:
-	// 	tlsStr = `{"enabled": false}`
-	// }
-	// result = utils.SetJsonObjectByString("tls", tlsStr, cnf)
+		if sf.RealityShortId != "" && sf.RealityPublicKey != "" {
+			reality := gjson.New(SingReality)
+			reality.Set("short_id", sf.RealityShortId)
+			reality.Set("public_key", sf.RealityPublicKey)
+			reality.Set("enabled", true)
+			j = utils.SetJsonObjectByString("reality", reality.MustToJsonString(), j)
+		}
+		tlsStr = j.MustToJsonString()
+	default:
+		tlsStr = `{"enabled": false}`
+	}
+	result = utils.SetJsonObjectByString("tls", tlsStr, cnf)
 	return
 }
