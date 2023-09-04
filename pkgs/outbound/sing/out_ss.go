@@ -117,9 +117,9 @@ func (that *SShadowSocksOut) getSettings() string {
 	if that.Parser.Mode != "" {
 		vpluginOpts = append(vpluginOpts, fmt.Sprintf("mode=%s", that.Parser.Mode))
 	}
-	if that.Parser.Mux != "" {
-		vpluginOpts = append(vpluginOpts, fmt.Sprintf("mux=%s", that.Parser.Mux))
-	}
+	// if that.Parser.Mux != "" {
+	// 	vpluginOpts = append(vpluginOpts, fmt.Sprintf("mux=%v", gconv.Bool(that.Parser.Mux)))
+	// }
 	if len(vpluginOpts) > 0 {
 		j.Set("plugin_opts", strings.Join(vpluginOpts, ";"))
 	}

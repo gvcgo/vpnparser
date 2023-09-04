@@ -29,7 +29,13 @@ func (that *ParserVless) Parse(rawUri string) {
 		that.UUID = r.User.Username()
 		query := r.Query()
 		that.Encryption = query.Get("encryption")
+		if that.Encryption == "" {
+			that.Encryption = "none"
+		}
 		that.Flow = query.Get("flow")
+		if that.Flow == "xtls-rprx-direct-udp443" {
+			that.Flow = "xtls-rprx-vision-udp443"
+		}
 
 		that.StreamField = &StreamField{
 			Network:          query.Get("type"),
