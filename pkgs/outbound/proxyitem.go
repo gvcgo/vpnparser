@@ -1,9 +1,10 @@
 package outbound
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
+
+	json "github.com/bytedance/sonic"
 
 	"github.com/moqsien/vpnparser/pkgs/parser"
 	"github.com/moqsien/vpnparser/pkgs/utils"
