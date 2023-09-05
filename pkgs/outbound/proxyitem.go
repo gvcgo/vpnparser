@@ -33,6 +33,7 @@ func EnableSingBox(rawUri string) bool {
 }
 
 type ProxyItem struct {
+	Scheme       string     `json:"scheme"`
 	Address      string     `json:"address"`
 	Port         int        `json:"port"`
 	RTT          int64      `json:"rtt"`
@@ -55,12 +56,12 @@ func NewItemByEncryptedRawUri(enRawUri string) (item *ProxyItem) {
 }
 
 func (that *ProxyItem) parse() bool {
-	scheme := utils.ParseScheme(that.RawUri)
+	that.Scheme = utils.ParseScheme(that.RawUri)
 	var ob IOutbound
-	if scheme == parser.SchemeSSR || (scheme == parser.SchemeSS && strings.Contains(that.RawUri, "plugin=")) {
+	if that.Scheme == parser.SchemeSSR || (that.Scheme == parser.SchemeSS && strings.Contains(that.RawUri, "plugin=")) {
 		that.OutboundType = SingBox
 		ob = GetOutbound(SingBox, that.RawUri)
-	} else if scheme == parser.SchemeSS && EnableSingBox(that.RawUri) {
+	} else if that.Scheme == parser.SchemeSS && EnableSingBox(that.RawUri) {
 		that.OutboundType = SingBox
 		ob = GetOutbound(SingBox, that.RawUri)
 	} else {
