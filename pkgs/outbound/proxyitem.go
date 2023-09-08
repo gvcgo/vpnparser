@@ -64,6 +64,9 @@ func (that *ProxyItem) parse() bool {
 	} else if that.Scheme == parser.SchemeSS && EnableSingBox(that.RawUri) {
 		that.OutboundType = SingBox
 		ob = GetOutbound(SingBox, that.RawUri)
+	} else if that.Scheme == parser.SchemeWireguard {
+		that.OutboundType = SingBox
+		ob = GetOutbound(SingBox, that.RawUri)
 	} else {
 		that.OutboundType = XrayCore
 		ob = GetOutbound(XrayCore, that.RawUri)
