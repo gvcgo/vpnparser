@@ -84,8 +84,10 @@ func (that *ProxyItem) parse() bool {
 
 // Item string for conf.txt
 func (that *ProxyItem) String() string {
-	if ok := that.parse(); !ok {
-		return ""
+	if that.Outbound == "" {
+		if ok := that.parse(); !ok {
+			return ""
+		}
 	}
 	if r, err := json.Marshal(that); err == nil {
 		return string(r)
@@ -124,10 +126,6 @@ func ParseRawUriToProxyItem(rawUri string, clientType ...ClientType) (p *ProxyIt
 		p.OutboundType = SingBox
 		ob := GetOutbound(SingBox, p.RawUri)
 		if ob == nil {
-			p.OutboundType = XrayCore
-			ob = GetOutbound(XrayCore, p.RawUri)
-		}
-		if ob == nil {
 			return
 		}
 		ob.Parse(p.RawUri)
@@ -138,10 +136,6 @@ func ParseRawUriToProxyItem(rawUri string, clientType ...ClientType) (p *ProxyIt
 	} else {
 		p.OutboundType = XrayCore
 		ob := GetOutbound(XrayCore, p.RawUri)
-		if ob == nil {
-			p.OutboundType = SingBox
-			ob = GetOutbound(SingBox, p.RawUri)
-		}
 		if ob == nil {
 			return
 		}
