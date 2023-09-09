@@ -28,7 +28,7 @@ func main() {
 
 	// cmd.StartApp()
 
-	rawUri := `vless://15f430e8-a55a-48ca-92de-305fd4305767@cf-edtunnel-a3m.pages.dev:443?security=tls&type=ws&sni=cf-edtunnel-a3m.pages.dev&path=/&encryption=none&headerType=none&host=cf-edtunnel-a3m.pages.dev&fp=random&alpn=h2&allowInsecure=1`
+	rawUri := `vless://15f430e8-a55a-48ca-92de-305fd4305767@xxx.dev:443?security=tls&type=ws&sni=xxx.dev&path=/&encryption=none&headerType=none&host=xxx.dev&fp=random&alpn=h2&allowInsecure=1`
 	p := outbound.ParseRawUriToProxyItem(rawUri, outbound.SingBox)
 	fmt.Println(p)
 }
