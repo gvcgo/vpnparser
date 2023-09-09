@@ -11,6 +11,8 @@ func main() {
 	// parser.VlessTest()
 	// parser.TrojanTest()
 	// parser.SSRTest()
+	// parser.TestWireguard()
+
 	// s := xray.GetPattern()
 	// fmt.Println(s)
 	// xray.TestVmess()
@@ -21,5 +23,6 @@ func main() {
 	// sing.TestVless()
 	// sing.TestTrojan()
 	// sing.TestSS()
+
 	cmd.StartApp()
 }
