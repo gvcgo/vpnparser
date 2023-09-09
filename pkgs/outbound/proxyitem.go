@@ -110,3 +110,50 @@ func (that *ProxyItem) GetOutbound() string {
 func (that *ProxyItem) GetOutboundType() ClientType {
 	return that.OutboundType
 }
+
+// Automatically parse rawUri to ProxyItem for certain Client[sing-box/xray-core]
+func ParseRawUriToProxyItem(rawUri string, clientType ...ClientType) (p *ProxyItem) {
+	if len(clientType) == 0 {
+		p = NewItem(rawUri)
+		p.GetOutbound()
+		return
+	}
+	p = NewItem(rawUri)
+	p.Scheme = utils.ParseScheme(p.RawUri)
+	if clientType[0] == SingBox {
+		p.OutboundType = SingBox
+		ob := GetOutbound(SingBox, p.RawUri)
+		if ob == nil {
+			p.OutboundType = XrayCore
+			ob = GetOutbound(XrayCore, p.RawUri)
+		}
+		if ob == nil {
+			return
+		}
+		ob.Parse(p.RawUri)
+		p.Outbound = ob.GetOutboundStr()
+		p.Address = ob.Addr()
+		p.Port = ob.Port()
+		return
+	} else {
+		p.OutboundType = XrayCore
+		ob := GetOutbound(XrayCore, p.RawUri)
+		if ob == nil {
+			p.OutboundType = SingBox
+			ob = GetOutbound(SingBox, p.RawUri)
+		}
+		if ob == nil {
+			return
+		}
+		ob.Parse(p.RawUri)
+		p.Outbound = ob.GetOutboundStr()
+		p.Address = ob.Addr()
+		p.Port = ob.Port()
+		return
+	}
+}
+
+func ParseEncryptedRawUriToProxyItem(rawUri string, clientType ...ClientType) (p *ProxyItem) {
+	rawUri = parser.ParseRawUri(rawUri)
+	return ParseRawUriToProxyItem(rawUri)
+}
