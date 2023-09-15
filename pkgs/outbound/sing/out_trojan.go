@@ -88,7 +88,8 @@ func (that *STrojanOut) GetOutboundStr() string {
 			return ""
 		}
 		cnf := gjson.New(settings)
-		cnf = PrepareStreamStr(cnf, that.Parser.StreamField)
+		// trojan doesn't need to prepare stream settings
+		// cnf = PrepareStreamStr(cnf, that.Parser.StreamField)
 		that.outbound = cnf.MustToJsonString()
 	}
 	return that.outbound

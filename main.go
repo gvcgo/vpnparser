@@ -28,7 +28,7 @@ func main() {
 
 	// cmd.StartApp()
 
-	rawUri := `vless://15f430e8-a55a-48ca-92de-305fd4305767@xxx.dev:443?security=tls&type=ws&sni=xxx.dev&path=/&encryption=none&headerType=none&host=xxx.dev&fp=random&alpn=h2&allowInsecure=1`
+	rawUri := "vmess://{\"add\":\"ms.shabijichang.com\",\"port\":\"80\",\"id\":\"f1865e50-2510-46d1-bcb2-e00b4b656305\",\"aid\":\"0\",\"scy\":\"auto\",\"net\":\"ws\",\"v\":\"2\",\"ps\":\"未知_0915019\",\"host\":\"\",\"path\":\"\",\"tls\":\"\",\"sni\":\"\",\"type\":\"none\",\"serverPort\":0,\"nation\":\"🏁ZZ\"}"
 	p := outbound.ParseRawUriToProxyItem(rawUri, outbound.SingBox)
-	fmt.Println(p)
+	fmt.Println(p.GetOutbound())
 }

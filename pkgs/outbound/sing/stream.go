@@ -1,6 +1,8 @@
 package sing
 
 import (
+	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/gogf/gf/encoding/gjson"
@@ -136,7 +138,8 @@ func PrepareStreamStr(cnf *gjson.Json, sf *parser.StreamField) (result *gjson.Js
 			h.Set("Host.0", host)
 			j = utils.SetJsonObjectByString("headers", h.MustToJsonString(), j)
 		}
-		j.Set("path", sf.Path)
+		SetPathForSingBoxTransport(sf.Path, j)
+		// j.Set("path", sf.Path)
 		tp = j.MustToJsonString()
 	case "ws":
 		j := gjson.New(SingWebSocket)
@@ -149,7 +152,11 @@ func PrepareStreamStr(cnf *gjson.Json, sf *parser.StreamField) (result *gjson.Js
 			h.Set("Host", host)
 			j = utils.SetJsonObjectByString("headers", h.MustToJsonString(), j)
 		}
-		j.Set("path", sf.Path)
+		if sf.Path == "" {
+			sf.Path = "/"
+		}
+		SetPathForSingBoxTransport(sf.Path, j)
+		// j.Set("path", sf.Path)
 		tp = j.MustToJsonString()
 	case "grpc":
 		j := gjson.New(SingGRPC)
@@ -164,11 +171,15 @@ func PrepareStreamStr(cnf *gjson.Json, sf *parser.StreamField) (result *gjson.Js
 	switch sf.StreamSecurity {
 	case "tls", "reality":
 		j := gjson.New(SingTLS)
+		if sf.ServerName == "" {
+			sf.ServerName = sf.Host
+		}
 		j.Set("server_name", sf.ServerName)
-		allowInsecure := true
+		allowInsecure := false
 		if sf.TLSAllowInsecure != "" {
 			allowInsecure = gconv.Bool(sf.TLSAllowInsecure)
 		}
+		j.Set("enabled", true)
 		j.Set("insecure", allowInsecure)
 		if sf.TLSALPN != "" {
 			j.Set("alpn", strings.Split(sf.TLSALPN, ","))
@@ -188,9 +199,33 @@ func PrepareStreamStr(cnf *gjson.Json, sf *parser.StreamField) (result *gjson.Js
 			j = utils.SetJsonObjectByString("reality", reality.MustToJsonString(), j)
 		}
 		tlsStr = j.MustToJsonString()
+		// fmt.Println(tlsStr)
 	default:
 		tlsStr = `{"enabled": false}`
 	}
 	result = utils.SetJsonObjectByString("tls", tlsStr, cnf)
+	return
+}
+
+func SetPathForSingBoxTransport(pathStr string, j *gjson.Json) {
+	if u := ParseSingBoxPathToURL(pathStr); u != nil {
+		if uPath := u.Path; uPath != "" {
+			j.Set("path", uPath)
+		}
+		if ed, err := strconv.Atoi(u.Query().Get("ed")); err == nil && ed > 0 {
+			j.Set("max_early_data", ed)
+			j.Set("early_data_header_name", "Sec-WebSocket-Protocol")
+		}
+	}
+}
+
+func ParseSingBoxPathToURL(pathStr string) (result *url.URL) {
+	if pathStr == "" {
+		return
+	}
+	if strings.HasPrefix(pathStr, "/") {
+		pathStr = "http://www.test.com" + pathStr
+	}
+	result, _ = url.Parse(pathStr)
 	return
 }
