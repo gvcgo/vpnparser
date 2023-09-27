@@ -151,3 +151,21 @@ func ParseEncryptedRawUriToProxyItem(rawUri string, clientType ...ClientType) (p
 	rawUri = parser.ParseRawUri(rawUri)
 	return ParseRawUriToProxyItem(rawUri)
 }
+
+// Transfer ProxyItem to specified ClientType: sing-box or xray-core
+func TransferProxyItem(oldProxyItem *ProxyItem, clientType ...ClientType) (newProxyItem *ProxyItem) {
+	if oldProxyItem == nil {
+		return
+	}
+	cType := SingBox // sing-box for default
+	if len(clientType) > 0 {
+		cType = clientType[0]
+	}
+	if oldProxyItem.OutboundType == cType {
+		return oldProxyItem
+	}
+	newProxyItem = ParseRawUriToProxyItem(oldProxyItem.RawUri, cType)
+	newProxyItem.Location = oldProxyItem.Location
+	newProxyItem.RTT = oldProxyItem.RTT
+	return
+}
