@@ -4,7 +4,7 @@ import (
 	"os"
 	"sync"
 
-	json "github.com/bytedance/sonic"
+	"encoding/json"
 
 	"github.com/moqsien/goutils/pkgs/gutils"
 	"github.com/moqsien/vpnparser/pkgs/parser"

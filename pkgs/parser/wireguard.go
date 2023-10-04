@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	json "github.com/bytedance/sonic"
+	"encoding/json"
+
 	"github.com/moqsien/goutils/pkgs/gtui"
 )
 

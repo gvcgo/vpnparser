@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	json "github.com/bytedance/sonic"
+	"encoding/json"
 
 	"github.com/moqsien/vpnparser/pkgs/parser"
 	"github.com/moqsien/vpnparser/pkgs/utils"
