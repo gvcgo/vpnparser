@@ -102,7 +102,7 @@ func (that *Result) Clear() {
 	that.Trojan = []*ProxyItem{}
 	that.TrojanTotal = 0
 	that.ShadowSocks = []*ProxyItem{}
-	that.SSRTotal = 0
+	that.SSTotal = 0
 	that.ShadowSocksR = []*ProxyItem{}
 	that.SSRTotal = 0
 	that.totalList = []*ProxyItem{}
