@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/v2/encoding/gjson"
 )
 
 /*
@@ -37,38 +37,38 @@ func (that *ParserVmess) Parse(rawUri string) {
 	if j == nil {
 		return
 	}
-	that.Address = j.GetString("add")
+	that.Address = j.Get("add").String()
 	if !strings.Contains(that.Address, ".") {
 		that.Address = ""
 		return
 	}
-	that.Port = j.GetInt("port")
-	that.UUID = j.GetString("id")
-	that.AID = j.GetString("aid")
-	that.Security = j.GetString("security")
-	that.Security = j.GetString("security")
+	that.Port = j.Get("port").Int()
+	that.UUID = j.Get("id").String()
+	that.AID = j.Get("aid").String()
+	that.Security = j.Get("security").String()
+	that.Security = j.Get("security").String()
 	if that.Security == "" {
-		that.Security = j.GetString("scy")
+		that.Security = j.Get("scy").String()
 	}
 
-	that.Nation = j.GetString("nation")
-	that.PS = j.GetString("ps")
-	that.ServerPort = j.GetString("serverPort")
-	that.SkipCertVerify = j.GetBool("skip-cert-verify")
-	that.TestName = j.GetString("test_name")
-	that.V = j.GetString("v")
+	that.Nation = j.Get("nation").String()
+	that.PS = j.Get("ps").String()
+	that.ServerPort = j.Get("serverPort").String()
+	that.SkipCertVerify = j.Get("skip-cert-verify").Bool()
+	that.TestName = j.Get("test_name").String()
+	that.V = j.Get("v").String()
 
 	that.StreamField = &StreamField{}
-	that.StreamField.Network = j.GetString("net")
-	that.StreamField.StreamSecurity = j.GetString("tls")
-	that.StreamField.Path = j.GetString("path")
-	that.StreamField.Host = j.GetString("host")
+	that.StreamField.Network = j.Get("net").String()
+	that.StreamField.StreamSecurity = j.Get("tls").String()
+	that.StreamField.Path = j.Get("path").String()
+	that.StreamField.Host = j.Get("host").String()
 	// that.StreamField.GRPCServiceName = j.GetString("serviceName")
 	// that.StreamField.GRPCMultiMode = j.GetString("mode")
-	that.StreamField.ServerName = j.GetString("sni")
-	that.StreamField.TCPHeaderType = j.GetString("type")
-	that.StreamField.TLSALPN = j.GetString("alpn")
-	that.StreamField.Fingerprint = j.GetString("fp")
+	that.StreamField.ServerName = j.Get("sni").String()
+	that.StreamField.TCPHeaderType = j.Get("type").String()
+	that.StreamField.TLSALPN = j.Get("alpn").String()
+	that.StreamField.Fingerprint = j.Get("fp").String()
 
 	// that.StreamField.RealityShortId = j.GetString("sid")
 	// that.StreamField.RealitySpiderX = j.GetString("spx")

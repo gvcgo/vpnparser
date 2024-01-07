@@ -3,7 +3,7 @@ package xray
 import (
 	"fmt"
 
-	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/moqsien/vpnparser/pkgs/parser"
 	"github.com/moqsien/vpnparser/pkgs/utils"
 )

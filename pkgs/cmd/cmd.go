@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/moqsien/vpnparser/pkgs/outbound"
 	cli "github.com/urfave/cli/v2"
 )
