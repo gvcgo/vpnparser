@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/v2/util/gconv"
-	"github.com/moqsien/goutils/pkgs/crypt"
+	"github.com/gvcgo/goutils/pkgs/crypt"
 )
 
 var SSRMethod map[string]struct{} = map[string]struct{}{

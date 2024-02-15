@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/v2/encoding/gjson"
-	"github.com/moqsien/vpnparser/pkgs/parser"
-	"github.com/moqsien/vpnparser/pkgs/utils"
+	"github.com/gvcgo/vpnparser/pkgs/parser"
+	"github.com/gvcgo/vpnparser/pkgs/utils"
 )
 
 /*

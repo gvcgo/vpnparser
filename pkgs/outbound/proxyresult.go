@@ -6,9 +6,9 @@ import (
 
 	"encoding/json"
 
-	"github.com/moqsien/goutils/pkgs/gutils"
-	"github.com/moqsien/vpnparser/pkgs/parser"
-	"github.com/moqsien/vpnparser/pkgs/utils"
+	"github.com/gvcgo/goutils/pkgs/gutils"
+	"github.com/gvcgo/vpnparser/pkgs/parser"
+	"github.com/gvcgo/vpnparser/pkgs/utils"
 )
 
 type Result struct {

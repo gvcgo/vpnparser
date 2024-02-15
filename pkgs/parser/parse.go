@@ -4,8 +4,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/moqsien/goutils/pkgs/crypt"
-	"github.com/moqsien/goutils/pkgs/gtui"
+	"github.com/gvcgo/goutils/pkgs/crypt"
+	"github.com/gvcgo/goutils/pkgs/gtui"
 )
 
 const (

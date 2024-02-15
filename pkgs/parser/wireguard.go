@@ -6,7 +6,7 @@ import (
 
 	"encoding/json"
 
-	"github.com/moqsien/goutils/pkgs/gtui"
+	"github.com/gvcgo/goutils/pkgs/gtui"
 )
 
 /*

@@ -3,10 +3,10 @@ package outbound
 import (
 	"fmt"
 
-	"github.com/moqsien/vpnparser/pkgs/outbound/sing"
-	"github.com/moqsien/vpnparser/pkgs/outbound/xray"
-	"github.com/moqsien/vpnparser/pkgs/parser"
-	"github.com/moqsien/vpnparser/pkgs/utils"
+	"github.com/gvcgo/vpnparser/pkgs/outbound/sing"
+	"github.com/gvcgo/vpnparser/pkgs/outbound/xray"
+	"github.com/gvcgo/vpnparser/pkgs/parser"
+	"github.com/gvcgo/vpnparser/pkgs/utils"
 )
 
 type ClientType string

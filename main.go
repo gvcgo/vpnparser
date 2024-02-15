@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/moqsien/vpnparser/pkgs/cmd"
-	_ "github.com/moqsien/vpnparser/pkgs/outbound/sing"
-	_ "github.com/moqsien/vpnparser/pkgs/outbound/xray"
-	_ "github.com/moqsien/vpnparser/pkgs/parser"
+	"github.com/gvcgo/vpnparser/pkgs/cmd"
+	_ "github.com/gvcgo/vpnparser/pkgs/outbound/sing"
+	_ "github.com/gvcgo/vpnparser/pkgs/outbound/xray"
+	_ "github.com/gvcgo/vpnparser/pkgs/parser"
 )
 
 func main() {
